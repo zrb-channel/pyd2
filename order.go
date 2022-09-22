@@ -4,13 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-
-	log "github.com/zrb-channel/utils/logger"
-
 	json "github.com/json-iterator/go"
-	"go.uber.org/zap"
+	config "github.com/zrb-channel/pyd2/config"
 	"github.com/zrb-channel/utils"
+	log "github.com/zrb-channel/utils/logger"
+	"go.uber.org/zap"
+	"net/http"
 )
 
 var (
@@ -23,7 +22,7 @@ var (
 // @param ctx
 // @param order
 // @date 2022-05-17 19:27:40
-func CreateOrder(ctx context.Context, conf *Config, req *CreateOrderRequest) (*CreateOrderResponse, error) {
+func CreateOrder(ctx context.Context, conf *config.Config, req *CreateOrderRequest) (*CreateOrderResponse, error) {
 
 	body, err := NewRequest(conf, "S000701", req)
 
@@ -36,7 +35,7 @@ func CreateOrder(ctx context.Context, conf *Config, req *CreateOrderRequest) (*C
 		return nil, err
 	}
 
-	resp, err := utils.Request(ctx).SetHeaders(headers).SetBody(body).Post(Addr)
+	resp, err := utils.Request(ctx).SetHeaders(headers).SetBody(body).Post(config.Addr)
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[订单信息提交]-请求失败", zap.Any("data", fields))
 		return nil, err
@@ -74,9 +73,9 @@ func CreateOrder(ctx context.Context, conf *Config, req *CreateOrderRequest) (*C
 // @param ctx
 // @param order
 // @date 2022-05-17 19:27:39
-func Redirect(ctx context.Context, conf *Config, req *RedirectRequest) (string, error) {
+func Redirect(ctx context.Context, conf *config.Config, req *RedirectRequest) (string, error) {
 
-	addr := fmt.Sprintf(Addr, "S000706")
+	addr := fmt.Sprintf(config.Addr, "S000706")
 
 	body, err := NewRequest(conf, "S000706", req)
 

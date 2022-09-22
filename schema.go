@@ -6,13 +6,6 @@ import (
 )
 
 type (
-	Config struct {
-		AppSecret string
-		AppId     string
-		PublicKey string
-		Channel   string
-	}
-
 	BaseRequest struct {
 		Data            string `json:"bizContent"`
 		AppCode         string `json:"appCode"`
