@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	json "github.com/json-iterator/go"
-	config "github.com/zrb-channel/pyd2/config"
 	"github.com/zrb-channel/utils"
 	log "github.com/zrb-channel/utils/logger"
 	"go.uber.org/zap"
@@ -16,7 +15,7 @@ import (
 // @param conf
 // @param req
 // @date 2022-09-22 18:45:07
-func QueryInfo(ctx context.Context, conf *config.Config, req *QueryInfoRequest) {
+func QueryInfo(ctx context.Context, conf *Config, req *QueryInfoRequest) {
 
 	body, err := NewRequest(conf, "S000705", req)
 
@@ -30,7 +29,7 @@ func QueryInfo(ctx context.Context, conf *config.Config, req *QueryInfoRequest) 
 		return
 	}
 
-	addr := fmt.Sprintf(config.Addr, "S000705")
+	addr := fmt.Sprintf(Addr, "S000705")
 
 	resp, err := utils.Request(ctx).SetHeaders(headers).SetBody(body).Post(addr)
 	if err != nil {
