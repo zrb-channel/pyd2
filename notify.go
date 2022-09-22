@@ -7,6 +7,20 @@ import (
 	json "github.com/json-iterator/go"
 )
 
+type NotifyHandlers interface {
+	OnPreCredit(ctx context.Context, req *NotifyPreApply) error
+
+	OnCredit(ctx context.Context, req *NotifyCreditRequest) error
+
+	OnApply(ctx context.Context, req *NotifyApplyRequest) error
+}
+
+var notifyHandlers NotifyHandlers
+
+func RegisterNotifyHandlers(handlers NotifyHandlers) {
+	notifyHandlers = handlers
+}
+
 // BeforeNotify
 // @param body
 // @date 2022-05-17 19:27:06
@@ -31,7 +45,15 @@ func BeforeNotify[T any](body []byte) (*T, error) {
 // @param body
 // @date 2022-05-17 19:27:02
 func NotifyPreCredit(ctx context.Context, body []byte) error {
-	return nil
+	v, err := BeforeNotify[NotifyPreApply](body)
+	if err != nil {
+		return err
+	}
+	if notifyHandlers == nil {
+		return nil
+	}
+
+	return notifyHandlers.OnPreCredit(ctx, v)
 }
 
 // NotifyCredit
@@ -39,8 +61,16 @@ func NotifyPreCredit(ctx context.Context, body []byte) error {
 // @param body
 // @date 2022-05-17 19:27:01
 func NotifyCredit(ctx context.Context, body []byte) error {
+	v, err := BeforeNotify[NotifyCreditRequest](body)
+	if err != nil {
+		return err
+	}
 
-	return nil
+	if notifyHandlers == nil {
+		return nil
+	}
+
+	return notifyHandlers.OnCredit(ctx, v)
 }
 
 // NotifyApply
@@ -48,5 +78,14 @@ func NotifyCredit(ctx context.Context, body []byte) error {
 // @param body
 // @date 2022-05-17 19:27:00
 func NotifyApply(ctx context.Context, body []byte) error {
-	return nil
+	v, err := BeforeNotify[NotifyApplyRequest](body)
+	if err != nil {
+		return err
+	}
+
+	if notifyHandlers == nil {
+		return nil
+	}
+
+	return notifyHandlers.OnApply(ctx, v)
 }
