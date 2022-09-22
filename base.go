@@ -5,7 +5,7 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	json "github.com/json-iterator/go"
-	config "github.com/zrb-channel/pyd2/config"
+
 	"github.com/zrb-channel/utils"
 	"github.com/zrb-channel/utils/aesutil"
 	"github.com/zrb-channel/utils/hash"
@@ -23,7 +23,7 @@ var AesIV = []byte{0x38, 0x37, 0x36, 0x35, 0x34, 0x33, 0x32, 0x31, 0x68, 0x67, 0
 // @param serviceCode
 // @param data
 // @date 2022-09-21 17:59:12
-func NewRequest(conf *config.Config, serviceCode string, data any) (*BaseRequest, error) {
+func NewRequest(conf *Config, serviceCode string, data any) (*BaseRequest, error) {
 
 	value, err := json.Marshal(data)
 	if err != nil {
@@ -87,7 +87,7 @@ func SubMonth(t1, t2 time.Time) (month int) {
 	return
 }
 
-func NewServiceRequest(conf *config.Config, serviceID string, id string, msg interface{}) (*ServiceBaseRequest, error) {
+func NewServiceRequest(conf *Config, serviceID string, id string, msg interface{}) (*ServiceBaseRequest, error) {
 	base := &ServiceBaseRequest{
 		AppId:     conf.AppId,
 		RequestId: id,
@@ -121,7 +121,7 @@ func (req *ServiceBaseRequest) SetMessage(message string) {
 	req.Message = message
 }
 
-func (req *ServiceBaseRequest) Sign(conf *config.Config, msg interface{}) error {
+func (req *ServiceBaseRequest) Sign(conf *Config, msg interface{}) error {
 	publicKey, err := PublicKeyFrom64(conf.PublicKey)
 	if err != nil {
 		return err

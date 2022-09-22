@@ -5,7 +5,6 @@ import (
 	"errors"
 	"net/http"
 
-	config "github.com/zrb-channel/pyd2/config"
 	"github.com/zrb-channel/utils"
 	log "github.com/zrb-channel/utils/logger"
 
@@ -19,7 +18,7 @@ import (
 // @param ctx
 // @param order *model.MemberApply
 // @date 2022-05-17 18:13:56
-func TaxLogin(ctx context.Context, conf *config.Config, req *LoginRequest) (string, error) {
+func TaxLogin(ctx context.Context, conf *Config, req *LoginRequest) (string, error) {
 	id := uuid.NewV4().String()
 
 	body, err := NewServiceRequest(conf, "tax090302", id, req)
@@ -34,7 +33,7 @@ func TaxLogin(ctx context.Context, conf *config.Config, req *LoginRequest) (stri
 	}
 
 	var resp *resty.Response
-	resp, err = utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(config.Addr + "/jd/tax/taxLogin")
+	resp, err = utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/jd/tax/taxLogin")
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[生成H5页面地址链接]-请求失败", zap.Any("data", fields))
@@ -68,7 +67,7 @@ func TaxLogin(ctx context.Context, conf *config.Config, req *LoginRequest) (stri
 // @param ctx context.Context
 // @param order *model.MemberApply
 // @date 2022-05-17 18:13:55
-func PluginGatherCheck(ctx context.Context, conf *config.Config, req *PluginGatherCheckRequest) (*BaseResponse[*PluginGatherCheckResponse], error) {
+func PluginGatherCheck(ctx context.Context, conf *Config, req *PluginGatherCheckRequest) (*BaseResponse[*PluginGatherCheckResponse], error) {
 	id := uuid.NewV4().String()
 
 	body, err := NewServiceRequest(conf, "RPACJ090301", id, req)
@@ -82,7 +81,7 @@ func PluginGatherCheck(ctx context.Context, conf *config.Config, req *PluginGath
 		return nil, err
 	}
 
-	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(config.Addr + "/rpa/upgrade/fpPluginGatherCheck")
+	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/rpa/upgrade/fpPluginGatherCheck")
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[判断是否有必要走RPA]-请求失败", zap.Any("data", fields))
@@ -120,7 +119,7 @@ func pluginGatherCheck(ctx context.Context) error {
 // @param ctx context.Context
 // @param taxCode string
 // @date 2022-05-17 18:13:52
-func CollectModelQuery(ctx context.Context, conf *config.Config, req *CollectModelQueryRequest) (*BaseResponse[*CollectModelQueryResponse], error) {
+func CollectModelQuery(ctx context.Context, conf *Config, req *CollectModelQueryRequest) (*BaseResponse[*CollectModelQueryResponse], error) {
 	id := uuid.NewV4().String()
 
 	body, err := NewServiceRequest(conf, "RPA082502", id, req)
@@ -134,7 +133,7 @@ func CollectModelQuery(ctx context.Context, conf *config.Config, req *CollectMod
 		return nil, err
 	}
 
-	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(config.Addr + "/collect/model/query")
+	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/collect/model/query")
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[查询是否支持RPA采集]-请求失败", zap.Any("data", fields))
 		return nil, err
@@ -165,7 +164,7 @@ func CollectModelQuery(ctx context.Context, conf *config.Config, req *CollectMod
 // @param ctx context.Context
 // @param order *model.MemberApply
 // @date 2022-05-17 18:13:51
-func CollectRpaQuery(ctx context.Context, conf *config.Config, req *H5QueryRequest) (*BaseResponse[*H5QueryResponseResult], error) {
+func CollectRpaQuery(ctx context.Context, conf *Config, req *H5QueryRequest) (*BaseResponse[*H5QueryResponseResult], error) {
 
 	id := uuid.NewV4().String()
 
@@ -181,7 +180,7 @@ func CollectRpaQuery(ctx context.Context, conf *config.Config, req *H5QueryReque
 		return nil, err
 	}
 
-	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(config.Addr + "/longma/billHaierbillCorrelation/RPA")
+	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/longma/billHaierbillCorrelation/RPA")
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[H5发票关联查询]-请求失败", zap.Any("data", fields))
@@ -210,7 +209,7 @@ func CollectRpaQuery(ctx context.Context, conf *config.Config, req *H5QueryReque
 // @param ctx
 // @param order *model.MemberApply
 // @date 2022-05-17 23:49:26
-func CollectPluginQuery(ctx context.Context, conf *config.Config, req *PluginQueryRequest) (*BaseResponse[any], error) {
+func CollectPluginQuery(ctx context.Context, conf *Config, req *PluginQueryRequest) (*BaseResponse[any], error) {
 
 	id := uuid.NewV4().String()
 
@@ -223,7 +222,7 @@ func CollectPluginQuery(ctx context.Context, conf *config.Config, req *PluginQue
 		return nil, err
 	}
 
-	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(config.Addr + "/longma/billHaier/billCorrelation")
+	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/longma/billHaier/billCorrelation")
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[插件发票关联查询]-请求失败", zap.Any("data", fields))

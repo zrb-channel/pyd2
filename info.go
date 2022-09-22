@@ -11,6 +11,11 @@ import (
 	"time"
 )
 
+// QueryInfo
+// @param ctx
+// @param conf
+// @param req
+// @date 2022-09-22 18:45:07
 func QueryInfo(ctx context.Context, conf *config.Config, req *QueryInfoRequest) {
 
 	body, err := NewRequest(conf, "S000705", req)
