@@ -19,6 +19,10 @@ import (
 // @param order *model.MemberApply
 // @date 2022-05-17 18:13:56
 func TaxLogin(ctx context.Context, conf *Config, req *LoginRequest) (string, error) {
+	if err := ctx.Err(); err != nil {
+		return "", err
+	}
+
 	id := uuid.NewV4().String()
 
 	body, err := NewServiceRequest(conf, "tax090302", id, req)
@@ -68,6 +72,10 @@ func TaxLogin(ctx context.Context, conf *Config, req *LoginRequest) (string, err
 // @param order *model.MemberApply
 // @date 2022-05-17 18:13:55
 func PluginGatherCheck(ctx context.Context, conf *Config, req *PluginGatherCheckRequest) (*BaseResponse[*PluginGatherCheckResponse], error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+
 	id := uuid.NewV4().String()
 
 	body, err := NewServiceRequest(conf, "RPACJ090301", id, req)
@@ -107,19 +115,15 @@ func PluginGatherCheck(ctx context.Context, conf *Config, req *PluginGatherCheck
 	return result, nil
 }
 
-// pluginGatherCheck 判断是否有必要走RPA
-// @param ctx context.Context
-// @param order *model.MemberApply
-// @date 2022-05-17 18:13:54
-func pluginGatherCheck(ctx context.Context) error {
-	return nil
-}
-
 // CollectModelQuery 查询是否支持RPA采集
 // @param ctx context.Context
 // @param taxCode string
 // @date 2022-05-17 18:13:52
 func CollectModelQuery(ctx context.Context, conf *Config, req *CollectModelQueryRequest) (*BaseResponse[*CollectModelQueryResponse], error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+
 	id := uuid.NewV4().String()
 
 	body, err := NewServiceRequest(conf, "RPA082502", id, req)
@@ -165,7 +169,9 @@ func CollectModelQuery(ctx context.Context, conf *Config, req *CollectModelQuery
 // @param order *model.MemberApply
 // @date 2022-05-17 18:13:51
 func CollectRpaQuery(ctx context.Context, conf *Config, req *H5QueryRequest) (*BaseResponse[*H5QueryResponseResult], error) {
-
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	id := uuid.NewV4().String()
 
 	body, err := NewServiceRequest(conf, "RPA082501", id, req)
@@ -210,7 +216,9 @@ func CollectRpaQuery(ctx context.Context, conf *Config, req *H5QueryRequest) (*B
 // @param order *model.MemberApply
 // @date 2022-05-17 23:49:26
 func CollectPluginQuery(ctx context.Context, conf *Config, req *PluginQueryRequest) (*BaseResponse[any], error) {
-
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	id := uuid.NewV4().String()
 
 	body, err := NewServiceRequest(conf, "HRFPD083101", id, req)

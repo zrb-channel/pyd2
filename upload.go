@@ -19,6 +19,11 @@ import (
 // @param order
 // @date 2022-05-17 19:23:57
 func UploadInvoice(ctx context.Context, conf *Config, req *UploadInvoiceRequest) (*BaseResponse[string], error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+
+	req.Channel = conf.ChannelCode
 
 	addr := fmt.Sprintf(Addr, "S000707")
 	body, err := NewRequest(conf, "S000707", req)

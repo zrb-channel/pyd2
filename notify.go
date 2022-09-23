@@ -25,6 +25,7 @@ func RegisterNotifyHandlers(handlers NotifyHandlers) {
 // @param body
 // @date 2022-05-17 19:27:06
 func BeforeNotify[T any](body []byte) (*T, error) {
+
 	req := &NotifyRequest{}
 	if err := json.Unmarshal(body, req); err != nil {
 		return nil, err
@@ -45,6 +46,10 @@ func BeforeNotify[T any](body []byte) (*T, error) {
 // @param body
 // @date 2022-05-17 19:27:02
 func NotifyPreCredit(ctx context.Context, body []byte) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	v, err := BeforeNotify[NotifyPreApply](body)
 	if err != nil {
 		return err
@@ -61,6 +66,10 @@ func NotifyPreCredit(ctx context.Context, body []byte) error {
 // @param body
 // @date 2022-05-17 19:27:01
 func NotifyCredit(ctx context.Context, body []byte) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	v, err := BeforeNotify[NotifyCreditRequest](body)
 	if err != nil {
 		return err
@@ -78,6 +87,10 @@ func NotifyCredit(ctx context.Context, body []byte) error {
 // @param body
 // @date 2022-05-17 19:27:00
 func NotifyApply(ctx context.Context, body []byte) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	v, err := BeforeNotify[NotifyApplyRequest](body)
 	if err != nil {
 		return err

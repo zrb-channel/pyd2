@@ -1,8 +1,29 @@
 package pyd2
 
-type Config struct {
-	AppSecret string
-	AppId     string
-	PublicKey string
-	Channel   string
-}
+type (
+	SubConfig struct {
+		Channel string `json:"channel"`
+
+		AppId string `json:"appId"`
+
+		AppCode string `json:"appCode"`
+
+		AppSecret string `json:"appSecret"`
+
+		PublicKey string `json:"publicKey"`
+	}
+
+	Config struct {
+		AppId string `json:"appId"`
+
+		AppSecret string `json:"appSecret"`
+
+		PublicKey string `json:"publicKey"`
+
+		Channel string `json:"channel"`
+
+		ChannelCode string `json:"channelCode"`
+
+		SubConfig SubConfig `json:"subConfig"`
+	}
+)

@@ -22,6 +22,11 @@ var (
 // @param order
 // @date 2022-05-17 19:27:40
 func CreateOrder(ctx context.Context, conf *Config, req *CreateOrderRequest) (*CreateOrderResponse, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+
+	req.Channel = conf.ChannelCode
 
 	body, err := NewRequest(conf, "S000701", req)
 
@@ -73,6 +78,11 @@ func CreateOrder(ctx context.Context, conf *Config, req *CreateOrderRequest) (*C
 // @param order
 // @date 2022-05-17 19:27:39
 func Redirect(ctx context.Context, conf *Config, req *RedirectRequest) (string, error) {
+	if err := ctx.Err(); err != nil {
+		return "", err
+	}
+
+	req.ChannelAgent = conf.ChannelCode
 
 	addr := fmt.Sprintf(Addr, "S000706")
 
