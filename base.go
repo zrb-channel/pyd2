@@ -71,7 +71,7 @@ func NewRequest(conf *Config, serviceCode string, data any) (*BaseRequest, error
 // @date 2022-09-24 01:06:03
 func NewServiceRequest(conf *Config, serviceID string, id string, msg interface{}) (*ServiceBaseRequest, error) {
 	base := &ServiceBaseRequest{
-		AppId:     conf.AppId,
+		AppId:     conf.SubConfig.AppId,
 		RequestId: id,
 		Timestamp: strconv.FormatInt(time.Now().UnixNano()/1e6, 10),
 		Channel:   conf.SubConfig.Channel,
