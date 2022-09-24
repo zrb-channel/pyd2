@@ -37,7 +37,7 @@ func TaxLogin(ctx context.Context, conf *Config, req *LoginRequest) (string, err
 	}
 
 	var resp *resty.Response
-	resp, err = utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/jd/tax/taxLogin")
+	resp, err = utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(ServiceAddr + "/jd/tax/taxLogin")
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[生成H5页面地址链接]-请求失败", zap.Any("data", fields))
@@ -89,7 +89,7 @@ func PluginGatherCheck(ctx context.Context, conf *Config, req *PluginGatherCheck
 		return nil, err
 	}
 
-	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/rpa/upgrade/fpPluginGatherCheck")
+	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(ServiceAddr + "/rpa/upgrade/fpPluginGatherCheck")
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[判断是否有必要走RPA]-请求失败", zap.Any("data", fields))
@@ -137,7 +137,7 @@ func CollectModelQuery(ctx context.Context, conf *Config, req *CollectModelQuery
 		return nil, err
 	}
 
-	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/collect/model/query")
+	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(ServiceAddr + "/collect/model/query")
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[查询是否支持RPA采集]-请求失败", zap.Any("data", fields))
 		return nil, err
@@ -186,7 +186,7 @@ func CollectRpaQuery(ctx context.Context, conf *Config, req *H5QueryRequest) (*B
 		return nil, err
 	}
 
-	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/longma/billHaierbillCorrelation/RPA")
+	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(ServiceAddr + "/longma/billHaierbillCorrelation/RPA")
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[H5发票关联查询]-请求失败", zap.Any("data", fields))
@@ -230,7 +230,7 @@ func CollectPluginQuery(ctx context.Context, conf *Config, req *PluginQueryReque
 		return nil, err
 	}
 
-	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(Addr + "/longma/billHaier/billCorrelation")
+	resp, err := utils.Request(ctx).SetBody(body).SetHeaders(headers).Post(ServiceAddr + "/longma/billHaier/billCorrelation")
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[插件发票关联查询]-请求失败", zap.Any("data", fields))
