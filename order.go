@@ -38,8 +38,8 @@ func CreateOrder(ctx context.Context, conf *Config, req *CreateOrderRequest) (*C
 		log.WithError(err).Error("[浦慧税贷]-[订单信息提交]-创建请求失败", zap.Any("data", fields))
 		return nil, err
 	}
-
-	resp, err := utils.Request(ctx).SetHeaders(headers).SetBody(body).Post(Addr)
+	addr := fmt.Sprintf(Addr, "S000701")
+	resp, err := utils.Request(ctx).SetHeaders(headers).SetBody(body).Post(addr)
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[订单信息提交]-请求失败", zap.Any("data", fields))
 		return nil, err
