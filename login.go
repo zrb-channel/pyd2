@@ -18,9 +18,9 @@ import (
 // @param ctx
 // @param order *model.MemberApply
 // @date 2022-05-17 18:13:56
-func TaxLogin(ctx context.Context, conf *Config, req *LoginRequest) (string, error) {
+func TaxLogin(ctx context.Context, conf *Config, req *LoginRequest) (*LoginResponse, error) {
 	if err := ctx.Err(); err != nil {
-		return "", err
+		return nil, err
 	}
 
 	id := uuid.NewV4().String()
@@ -28,12 +28,13 @@ func TaxLogin(ctx context.Context, conf *Config, req *LoginRequest) (string, err
 	body, err := NewServiceRequest(conf, "tax090302", id, req)
 	fields := map[string]any{
 		"req":  req,
+		"conf": conf,
 		"body": body,
 	}
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[生成H5页面地址链接]-创建请求失败", zap.Any("data", fields))
-		return "", errors.New(err.Error())
+		return nil, errors.New(err.Error())
 	}
 
 	var resp *resty.Response
@@ -41,30 +42,30 @@ func TaxLogin(ctx context.Context, conf *Config, req *LoginRequest) (string, err
 
 	if err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[生成H5页面地址链接]-请求失败", zap.Any("data", fields))
-		return "", errors.New(err.Error())
+		return nil, errors.New(err.Error())
 	}
 
 	if resp.StatusCode() != http.StatusOK {
 		fields["status"] = resp.StatusCode()
 		log.WithError(err).Error("[浦慧税贷]-[生成H5页面地址链接]-响应状态码有误", zap.Any("data", fields))
-		return "", errors.New("请求失败")
+		return nil, errors.New("请求失败")
 	}
 
 	fields["resp"] = resp.String()
 	result := &BaseResponse[*BaseData[*ResponseRecord[*LoginResponse]]]{}
 	if err = json.Unmarshal(resp.Body(), result); err != nil {
 		log.WithError(err).Error("[浦慧税贷]-[生成H5页面地址链接]-响应数据解析为BaseResponse失败", zap.Any("data", fields))
-		return "", err
+		return nil, err
 	}
 
 	fields["result"] = result
 	if result.Code != "000000" {
 		log.WithError(err).Error("[浦慧税贷]-[生成H5页面地址链接]-code有误", zap.Any("data", fields))
-		return "", errors.New(result.Message)
+		return nil, errors.New(result.Message)
 	}
 
 	log.Info("[浦慧税贷]-[生成H5页面地址链接]-成功", zap.Any("data", fields))
-	return result.Data.Records.Data.URL, nil
+	return result.Data.Records.Data, nil
 }
 
 // PluginGatherCheck 判断是否有必要走RPA
@@ -80,6 +81,7 @@ func PluginGatherCheck(ctx context.Context, conf *Config, req *PluginGatherCheck
 
 	body, err := NewServiceRequest(conf, "RPACJ090301", id, req)
 	fields := map[string]any{
+		"conf": conf,
 		"req":  req,
 		"body": body,
 	}
@@ -130,6 +132,7 @@ func CollectModelQuery(ctx context.Context, conf *Config, req *CollectModelQuery
 	fields := map[string]any{
 		"req":  req,
 		"body": body,
+		"conf": conf,
 	}
 
 	if err != nil {
@@ -177,6 +180,7 @@ func CollectRpaQuery(ctx context.Context, conf *Config, req *H5QueryRequest) (*B
 	body, err := NewServiceRequest(conf, "RPA082501", id, req)
 
 	fields := map[string]any{
+		"conf": conf,
 		"req":  req,
 		"body": body,
 	}

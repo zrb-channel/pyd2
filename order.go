@@ -26,7 +26,7 @@ func CreateOrder(ctx context.Context, conf *Config, req *CreateOrderRequest) (*C
 		return nil, err
 	}
 
-	req.Channel = conf.ChannelCode
+	req.Channel = conf.Channel
 
 	body, err := NewRequest(conf, "S000701", req)
 
@@ -82,7 +82,7 @@ func Redirect(ctx context.Context, conf *Config, req *RedirectRequest) (string, 
 		return "", err
 	}
 
-	req.ChannelAgent = conf.ChannelCode
+	req.ChannelAgent = conf.Channel
 
 	addr := fmt.Sprintf(Addr, "S000706")
 

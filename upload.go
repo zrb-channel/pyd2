@@ -23,7 +23,7 @@ func UploadInvoice(ctx context.Context, conf *Config, req *UploadInvoiceRequest)
 		return nil, err
 	}
 
-	req.Channel = conf.ChannelCode
+	req.Channel = conf.Channel
 
 	addr := fmt.Sprintf(Addr, "S000707")
 	body, err := NewRequest(conf, "S000707", req)

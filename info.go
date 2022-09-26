@@ -20,7 +20,7 @@ func QueryInfo(ctx context.Context, conf *Config, req *QueryInfoRequest) (*Query
 		return nil, err
 	}
 
-	req.Channel = conf.ChannelCode
+	req.Channel = conf.Channel
 
 	body, err := NewRequest(conf, "S000705", req)
 

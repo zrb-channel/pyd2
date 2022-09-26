@@ -22,8 +22,6 @@ type (
 
 		Channel string `json:"channel"`
 
-		ChannelCode string `json:"channelCode"`
-
 		SubConfig SubConfig `json:"subConfig"`
 	}
 )
